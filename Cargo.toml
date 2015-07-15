@@ -1,0 +1,7 @@
+[package]
+name = "cfd"
+version = "0.1.0"
+authors = ["Alexandre Lewkowicz <lewkow_a@epita.fr>"]
+
+[dependencies]
+sdl2 = "0.5"
