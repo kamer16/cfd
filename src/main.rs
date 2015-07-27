@@ -8,8 +8,8 @@ use sdl2::pixels::PixelFormatEnum;
 
 fn main() {
     let w = 800;
-    let h = 400;
-    let sys = physics::System::new(w, h);
+    let h = 800;
+    let mut sys = physics::System::new(w, h);
     let mut sdl_context = sdl2::init().video().unwrap();
     let window = sdl_context.window("Computational fluid dynamics", w, h)
         .position_centered()
@@ -21,7 +21,7 @@ fn main() {
     let mut tex = renderer.create_texture_streaming(PixelFormatEnum::RGBA8888,
                                           (w, h))
         .unwrap();
-    tex.update(None, &sys.fluid, (w * 4) as usize).unwrap();
+    tex.update(None, sys.get_pixels(), (w * 4) as usize).unwrap();
     renderer.clear();
     renderer.copy(&tex, None, None);
     renderer.present();
@@ -39,6 +39,10 @@ fn main() {
                 _ => {}
             }
         }
-        // The rest of the game loop goes here...
+        sys.update();
+        tex.update(None, sys.get_pixels(), (w * 4) as usize).unwrap();
+        renderer.clear();
+        renderer.copy(&tex, None, None);
+        renderer.present();
     }
 }

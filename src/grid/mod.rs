@@ -1,11 +1,11 @@
 use sdl2::rect;
-use std::ops::Deref;
+use std::ops::{Deref, DerefMut};
 
 #[derive(Debug)]
 pub struct Grid {
     width: u32,
     height: u32,
-    data: Vec<u8>,
+    data: Vec<f32>,
 }
 
 impl Grid {
@@ -13,7 +13,7 @@ impl Grid {
         Grid {
             width: width,
             height: height,
-            data: vec!(0; (width * height * 4) as usize)
+            data: vec!(0.; (width * height) as usize)
         }
     }
 
@@ -23,19 +23,22 @@ impl Grid {
             let start_range: usize = (j * self.width + x as u32) as usize;
             let end_range: usize = start_range + w as usize;
             for idx in start_range..end_range + 1 {
-                self.data[idx * 4 + 0] = 0;
-                self.data[idx * 4 + 1] = 127;
-                self.data[idx * 4 + 2] = 127;
-                self.data[idx * 4 + 3] = 127;
+                self.data[idx] = 127.;
             }
         }
     }
 }
 
 impl Deref for Grid {
-    type Target = [u8];
+    type Target = [f32];
 
-    fn deref(&self) -> &[u8] {
+    fn deref(&self) -> &[f32] {
         &self.data[..]
+    }
+}
+
+impl DerefMut for Grid {
+    fn deref_mut(&mut self) -> &mut [f32] {
+        &mut self.data[..]
     }
 }
