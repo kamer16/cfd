@@ -1,34 +1,24 @@
 extern crate sdl2;
 
 mod physics;
+mod screen;
 mod grid;
-use sdl2::keyboard::Keycode;
 
-use sdl2::pixels::PixelFormatEnum;
+use sdl2::keyboard::Keycode;
+pub use physics::Simulation;
 
 fn main() {
-    let w = 800;
-    let h = 800;
-    let mut sys = physics::System::new(w, h);
+    let (w, h) = (800, 800);
+    let (nx, ny) = (w * 1, h * 1);
+    let mut sys = physics::LinearConvection::new(nx, ny);
     let mut sdl_context = sdl2::init().video().unwrap();
-    let window = sdl_context.window("Computational fluid dynamics", w, h)
-        .position_centered()
-        .build()
-        .unwrap();
-
-    let mut renderer = window.renderer().build().unwrap();
-
-    let mut tex = renderer.create_texture_streaming(PixelFormatEnum::RGBA8888,
-                                          (w, h))
-        .unwrap();
-    tex.update(None, sys.get_pixels(), (w * 4) as usize).unwrap();
-    renderer.clear();
-    renderer.copy(&tex, None, None);
-    renderer.present();
+    let mut screen = screen::Screen::new(w, h, &sdl_context);
 
     let mut running = true;
 
     while running {
+        screen.render(sys.get_grid());
+        sys.update();
         for event in sdl_context.event_pump().poll_iter() {
             use sdl2::event::Event;
 
@@ -39,10 +29,5 @@ fn main() {
                 _ => {}
             }
         }
-        sys.update();
-        tex.update(None, sys.get_pixels(), (w * 4) as usize).unwrap();
-        renderer.clear();
-        renderer.copy(&tex, None, None);
-        renderer.present();
     }
 }
