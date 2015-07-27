@@ -19,6 +19,9 @@ impl Grid {
 
     pub fn init(&mut self, rect: rect::Rect) {
         let (x, y, w, h) = rect.xywh();
+        for x in &mut self.data {
+            *x = 0.;
+        }
         for j in y as u32..y as u32 + h {
             let start_range: usize = (j * self.nx + x as u32) as usize;
             let end_range: usize = start_range + w as usize;

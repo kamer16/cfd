@@ -5,3 +5,4 @@ authors = ["Alexandre Lewkowicz <lewkow_a@epita.fr>"]
 
 [dependencies]
 sdl2 = "0.5"
+time = "0.1"

@@ -12,6 +12,14 @@ pub struct Screen<'a> {
 }
 
 impl<'a> Screen<'a> {
+    pub fn set_title(&mut self, sdl_context: &sdl2::Sdl, fps: u32) {
+        if fps == 0 {
+            return;
+        }
+        self.renderer.window_properties(sdl_context).unwrap()
+            .set_title(&format!("Computational fluid dynamics: FPS {}", fps));
+    }
+
     pub fn new(w: u32, h: u32, sdl_context: &sdl2::Sdl) -> Screen<'a> {
     let window = sdl_context.window("Computational fluid dynamics", w, h)
         .position_centered()

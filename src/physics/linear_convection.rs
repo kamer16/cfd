@@ -3,7 +3,7 @@ use grid;
 use sdl2::rect;
 
 pub struct LinearConvection {
-    fluid: grid::Grid,
+    pub fluid: grid::Grid,
     width: u32,
     height: u32,
     dx: f32,
@@ -46,11 +46,15 @@ impl Simulation for LinearConvection {
                 let c = u[idx];
                 let l = u[(idx - 1)];
                 let t = u[(idx - self.width as usize)];
-                let val = c -
+                let mut val = c -
                     (self.c * self.dt / self.dx * (c - l)) -
                     (self.c * self.dt / self.dy * (c - t));
 
 
+                // Some hardware are slow on subnormal numbers
+                if !val.is_normal() && val != 0.{
+                    val = 0.;
+                }
                 u[idx] = val;
             }
         }
