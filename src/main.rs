@@ -1,10 +1,17 @@
+#![allow(dead_code)]
+#![feature(scoped)]
+#![feature(test)]
+#![feature(alloc)]
+
 extern crate sdl2;
 extern crate time;
+extern crate test;
 
 mod physics;
 mod screen;
 mod grid;
 mod fps;
+mod tests;
 
 use sdl2::keyboard::Keycode;
 pub use physics::Simulation;
@@ -21,7 +28,7 @@ fn main() {
 
     while running {
         screen.render(sys.get_grid());
-        sys.update();
+        sys.update(8);
 
         for event in sdl_context.event_pump().poll_iter() {
             use sdl2::event::Event;

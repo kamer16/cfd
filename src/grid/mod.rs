@@ -1,7 +1,7 @@
 use sdl2::rect;
 use std::ops::{Deref, DerefMut};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Grid {
     nx: u32,
     ny: u32,
