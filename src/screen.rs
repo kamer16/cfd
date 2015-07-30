@@ -48,7 +48,8 @@ impl<'a> Screen<'a> {
         for y in 0..self.height as usize {
             for x in 0..self.width as usize {
                 let idx = x + y * self.width as usize;
-                let val = self.get_average(x as u32, y as u32, grid);
+                //let val = self.get_average(x as u32, y as u32, grid);
+                let val = grid[(x + y * self.width as usize)].round() as u8;
                 self.pixels[idx * 4 + 0] = 0;
                 self.pixels[idx * 4 + 1] = val;
                 self.pixels[idx * 4 + 2] = val;

@@ -82,6 +82,17 @@ impl Simulation for LinearConvection {
             }
         }
 
+        // Border conditions
+        for idx in 1..self.height+1 {
+            self.buff[(idx*self.width - 1) as usize] = 0.;
+            self.buff[((idx-1)*self.width) as usize] = 0.;
+        }
+        for idx in 0..self.width {
+            self.buff[idx as usize] = 0.;
+            self.buff[((self.height - 1) * self.width + idx) as usize] = 0.;
+        }
+
+        // Swap buff and fluid
         unsafe {
             mem::swap(self.fluid.make_unique(), &mut self.buff);
         }

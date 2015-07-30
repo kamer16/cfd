@@ -19,7 +19,8 @@ pub use physics::Simulation;
 fn main() {
     let (w, h) = (800, 800);
     let (nx, ny) = (w * 1, h * 1);
-    let mut sys = physics::LinearConvection::new(nx, ny);
+    //let mut sys = physics::LinearConvection::new(nx, ny);
+    let mut sys = physics::CavityFlow::new(nx, ny);
     let mut sdl_context = sdl2::init().video().unwrap();
     let mut screen = screen::Screen::new(w, h, &sdl_context);
 
